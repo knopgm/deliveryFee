@@ -2,6 +2,7 @@ import {
   calculateCartValueFee,
   calculateDistanceFee,
   calculateItemsFee,
+  calculateTotalFee,
   getFridayRushFeeMultiplier,
 } from './calculateDeliveryFee';
 
@@ -20,6 +21,7 @@ describe('calculateCartValueFee', () => {
     expect(calculateCartValueFee(8)).toBe(2);
     expect(calculateCartValueFee(7.1)).toEqual(2.9);
     expect(calculateCartValueFee(1)).toBe(9);
+    expect(calculateCartValueFee(0)).toBe(10);
   });
 });
 
@@ -69,13 +71,38 @@ describe('calculateItemsFee', () => {
 
 describe('getFridayRushFeeMultiplier', () => {
   test('returns 1.2 if provided day is 6 and the delivery time is between 3 and 7', () => {
-    expect(getFridayRushFeeMultiplier(2, 6)).toBe(1);
-    expect(getFridayRushFeeMultiplier(3, 6)).toBe(1.2);
-    expect(getFridayRushFeeMultiplier(4, 6)).toBe(1.2);
-    expect(getFridayRushFeeMultiplier(5, 6)).toBe(1.2);
-    expect(getFridayRushFeeMultiplier(6, 6)).toBe(1.2);
-    expect(getFridayRushFeeMultiplier(7, 6)).toBe(1.2);
-    expect(getFridayRushFeeMultiplier(8, 6)).toBe(1);
-    expect(getFridayRushFeeMultiplier(5, 5)).toBe(1);
+    expect(getFridayRushFeeMultiplier(undefined, 5)).toBe(1);
+    expect(getFridayRushFeeMultiplier(14, undefined)).toBe(1);
+    expect(getFridayRushFeeMultiplier(undefined, undefined)).toBe(1);
+    expect(getFridayRushFeeMultiplier(14, 5)).toBe(1);
+    expect(getFridayRushFeeMultiplier(15, 5)).toBe(1.2);
+    expect(getFridayRushFeeMultiplier(16, 5)).toBe(1.2);
+    expect(getFridayRushFeeMultiplier(17, 5)).toBe(1.2);
+    expect(getFridayRushFeeMultiplier(18, 5)).toBe(1.2);
+    expect(getFridayRushFeeMultiplier(19, 5)).toBe(1.2);
+    expect(getFridayRushFeeMultiplier(20, 5)).toBe(1);
+    expect(getFridayRushFeeMultiplier(17, 4)).toBe(1);
+  });
+});
+
+describe('calculateTotalFee', () => {
+  test('returns 0 if provided cart value is greater than or equal to 200', () => {
+    expect(calculateTotalFee(1, 1, 1, 1, 1, 1)).not.toBe(0);
+    expect(calculateTotalFee(199, 1, 1, 1, 1, 1)).not.toBe(0);
+    expect(calculateTotalFee(200, 1, 1, 1, 1, 1)).toBe(0);
+    expect(calculateTotalFee(201, 1, 1, 1, 1, 1)).toBe(0);
+    expect(calculateTotalFee(999, 1, 1, 1, 1, 1)).toBe(0);
+  });
+
+  test('returns the sum of provided fees when cart value is less than 200', () => {
+    expect(calculateTotalFee(1, 1, 1, 1, 1, 1)).toBe(3);
+    expect(calculateTotalFee(199, 1, 1, 1, 1, 1)).toBe(3);
+    expect(calculateTotalFee(199, 1, 2, 3, 1, 1)).toBe(6);
+  });
+
+  test('returns the sum of provided fee x 1.2 when cart value is less than 200 on friday rush time (between 15 and 19)', () => {
+    expect(calculateTotalFee(1, 1, 1, 1, 15, 5)).toBe(3.6);
+    expect(calculateTotalFee(199, 1, 1, 1, 19, 5)).toBe(3.6);
+    expect(calculateTotalFee(199, 1, 2, 3, 19, 5)).toBe(7.2);
   });
 });
