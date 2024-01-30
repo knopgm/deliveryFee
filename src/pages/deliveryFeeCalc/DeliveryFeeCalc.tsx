@@ -1,119 +1,157 @@
 import { useState } from 'react';
+import ReactDatePicker from 'react-datepicker';
 import {
   calculateCartValueFee,
   calculateDistanceFee,
   calculateItemsFee,
+  calculateTotalFee,
 } from '../../utilities/calculateDeliveryFee';
 
-type CartItem = {
-  price: number;
-  quantity: number;
-};
+import './DeliveryFeeCalc.css';
 
-type DeliveryFeeCalcProps = {
-  items: CartItem[];
-};
+import 'react-datepicker/dist/react-datepicker.css';
 
-export default function DeliveryFeeCalc(props: DeliveryFeeCalcProps) {
+export default function DeliveryFeeCalc() {
   const [fee, setFee] = useState(0);
-  const [cartValue, setCartValue] = useState<number | undefined>(undefined);
-  const [distance, setDistance] = useState(0);
-  const [items, setItems] = useState(0);
+  const [cartValueInput, setCartValueInput] = useState<string>('');
+  const [cartValue, setCartValue] = useState<number>(0);
+  const [distance, setDistance] = useState<number | undefined>(undefined);
+  const [itemsQtn, setItemsQtn] = useState<number | undefined>(undefined);
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
 
   // When user type, it set's a new cart value
-  const handleCartValueInputChange = (value?: number) => {
-    setCartValue(value);
+  const handleCartValueInputChange = (inputValue: string) => {
+    if (inputValue === '') {
+      setCartValueInput('');
+      setCartValue(0);
+    } else if (/^[1-9]([0-9]+)?((\.|,)([0-9]{0,2}))?$/.test(inputValue)) {
+      setCartValueInput(inputValue);
+      setCartValue(parseFloat(inputValue.replace(',', '.')));
+    }
   };
   const cartValueFee = calculateCartValueFee(cartValue);
 
-  // When user type, set a new distance value
-  const handleDistanceFee = (meters: number) => {
-    setDistance(meters);
+  // When user type, it set's a new distance value
+  const handleDistanceFee = (meters: string) => {
+    if (meters === '') {
+      setDistance(undefined);
+    } else {
+      setDistance(parseInt(meters));
+    }
   };
   const distanceFee = calculateDistanceFee(distance);
 
-  const handleItemsFee = (quantity: number) => {
-    setItems(quantity);
+  // When user type, it set's a new quantity of items
+  const handleItemsFee = (quantity: string) => {
+    if (quantity === '') {
+      setItemsQtn(undefined);
+    }
+    setItemsQtn(parseFloat(quantity));
   };
+  const itemsFee = calculateItemsFee(itemsQtn);
 
-  const itemsFee = calculateItemsFee(items);
-
-  const handleTotalFee = (
-    cartValuefee: number,
-    distanceFee: number,
-    itemsFee: number
-  ) => {
-    if (cartValue === undefined) {
-      return 0;
-    }
-    if (cartValue >= 200) {
-      return;
-    }
-    let totalFee = cartValuefee + distanceFee + itemsFee;
-    if (totalFee > 15) {
-      totalFee = 15;
-    }
-    setFee(totalFee);
+  // Handle the calculate fee when user press button
+  const handleTotalFee = () => {
+    setFee(
+      calculateTotalFee(
+        cartValue,
+        cartValueFee,
+        distanceFee,
+        itemsFee,
+        startDate?.getHours(),
+        startDate?.getDay()
+      )
+    );
   };
-
-  console.log({ cartValue });
 
   return (
     <div>
       <h1>Delivery Fee Calculator</h1>
-      <form>
-        <label htmlFor="cart-value">Cart value</label>
-        <input
-          required
-          id="cart-value"
-          name="cart-value"
-          value={cartValue ?? ''}
-          // onKeyDown={(event) => {
-          //   if (!/^[0-9]$/.test(event.key)) {
-          //     event.preventDefault();
-          //   }
-          // }}
-          onChange={(event) => {
-            console.log(event.target.value);
-            const inputValue = event.target.value;
-            if (
-              inputValue === '' ||
-              /^[1-9]([0-9]+)?((\.|,)([0-9]{0,2}))?$/.test(event.target.value)
-            ) {
-              handleCartValueInputChange(parseFloat(event.target.value));
+      <form
+        className="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleTotalFee();
+        }}
+      >
+        <div className="inputLabel-wrapper">
+          <label htmlFor="cart-value">Cart value:</label>
+          <input
+            required
+            type="text"
+            id="cart-value"
+            name="cart-value"
+            data-test-id="cartValue"
+            value={cartValueInput}
+            onChange={(event) => {
+              handleCartValueInputChange(event.target.value);
+            }}
+          />
+        </div>
+        <div className="inputLabel-wrapper">
+          <label htmlFor="delivery-distance">Delivery distance:</label>
+          <input
+            required
+            type="number"
+            min="0"
+            id="delivery-distance"
+            name="delivery-distance"
+            data-test-id="deliveryDistance"
+            value={distance ?? ''}
+            onChange={(event) => {
+              const inputValue = event.target.value;
+              handleDistanceFee(inputValue);
+            }}
+          />
+        </div>
+        <div className="inputLabel-wrapper">
+          <label htmlFor="items-quantity">Number of items:</label>
+          <input
+            required
+            type="number"
+            min="0"
+            id="items-quantity"
+            name="items-quantity"
+            data-test-id="itemsQuantity"
+            value={itemsQtn ?? ''}
+            onChange={(event) => {
+              handleItemsFee(event.target.value);
+            }}
+          />
+        </div>
+        <div className="inputLabel-wrapper">
+          <label htmlFor="date-picker">Schedule your delivery:</label>
+          <ReactDatePicker
+            showTimeSelect
+            id="date-picker"
+            dateFormat="dd/MM/yyyy h:mm aa"
+            selected={startDate}
+            onChange={(date) => {
+              if (date) {
+                setStartDate(date);
+              }
+            }}
+            customInput={
+              <input
+                data-test-id="datePicker"
+                data-testid="datePicker"
+                type="text"
+              />
             }
-          }}
-        />
-        <label htmlFor="delivery-distance">Delivery distance</label>
-        <input
-          required
-          id="delivery-distance"
-          name="delivery-distance"
-          value={distance}
-          onChange={(event) => {
-            handleDistanceFee(parseFloat(event.target.value));
-          }}
-        />
-        <label htmlFor="items-quantity">Number of items</label>
-        <input
-          required
-          id="items-quantity"
-          name="items-quantity"
-          value={items}
-          onChange={(event) => {
-            handleItemsFee(parseFloat(event.target.value));
-          }}
-        />
-        <button
-          type="button"
-          onClick={() => {
-            handleTotalFee(cartValueFee, distanceFee, itemsFee);
-          }}
-        >
-          Calculate Fee
-        </button>
+          />
+        </div>
+        <div className="button-wrapper">
+          <button type="submit">Calculate delivery fee</button>
+        </div>
       </form>
-      <h3>Total Fee = {fee}$</h3>
+      <div className="totalFee-wrapper">
+        <h3 className="totalFee">
+          Total Fee:{' '}
+          <span data-test-id="fee" data-testid="fee">
+            {fee}$
+          </span>
+        </h3>
+      </div>
     </div>
   );
 }
