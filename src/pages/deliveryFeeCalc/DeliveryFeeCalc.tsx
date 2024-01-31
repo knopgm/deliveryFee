@@ -65,8 +65,8 @@ export default function DeliveryFeeCalc() {
   };
 
   return (
-    <div>
-      <h1>Delivery Fee Calculator</h1>
+    <div className="calculator-frame">
+      <h1 className="bodyTitle">Delivery Fee Calculator</h1>
       <form
         className="form"
         onSubmit={(e) => {
@@ -133,6 +133,7 @@ export default function DeliveryFeeCalc() {
             }}
             customInput={
               <input
+                required
                 data-test-id="datePicker"
                 data-testid="datePicker"
                 type="text"
@@ -143,15 +144,15 @@ export default function DeliveryFeeCalc() {
         <div className="button-wrapper">
           <button type="submit">Calculate delivery fee</button>
         </div>
+        <div className="totalFee-wrapper">
+          <h3 className="totalFee">
+            Total Fee:{' '}
+            <span data-test-id="fee" data-testid="fee">
+              {fee}$
+            </span>
+          </h3>
+        </div>
       </form>
-      <div className="totalFee-wrapper">
-        <h3 className="totalFee">
-          Total Fee:{' '}
-          <span data-test-id="fee" data-testid="fee">
-            {fee}$
-          </span>
-        </h3>
-      </div>
     </div>
   );
 }

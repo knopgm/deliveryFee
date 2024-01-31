@@ -3,11 +3,20 @@
   text-align: center;
 }
 
+.app-wrapper {
+  margin: 0 auto;
+  max-width: 790px;
+  min-width: 255px;
+  width: 100%;
+  padding: 0 1rem;
+}
+
 .topImgs {
   display: flex;
   align-items: center;
   align-items: center;
   padding-left: 15%;
+  padding-bottom: 20px;
 }
 
 .logo-wrapper {
@@ -25,7 +34,9 @@
   filter: drop-shadow(0 0 3em #6ddcfbaa);
 }
 .imgYuho {
+  position: relative;
   object-fit: scale-down;
+  z-index: -1;
 }
 
 .card {
@@ -36,6 +47,7 @@
   color: #888;
 }
 
+/* Desktop */
 @media only screen and (min-width: 769px) {
   .topImgs {
     padding-left: unset;

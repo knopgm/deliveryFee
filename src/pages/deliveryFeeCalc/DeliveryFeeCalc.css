@@ -1,7 +1,19 @@
+.calculator-frame {
+  border: 1px transparent;
+  box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 23px;
+}
+
+.bodyTitle {
+  padding: 20px 4px;
+  font-size: 28px;
+}
+
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1em;
+  font-size: 16px;
 }
 
 .inputLabel-wrapper {
@@ -13,21 +25,37 @@
   font-family: inherit;
 }
 
-.button-wrapper {
-  padding-top: 1rem;
-}
-
 .totalFee-wrapper {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  left: 0;
   background-color: #9ee7fb;
 }
 
 .totalFee {
   display: flex;
-  padding: 0.5em;
+  padding: 1.2em 0;
   gap: 0.5em;
   justify-content: center;
+}
+
+/* Ipad */
+@media screen and (min-width: 480px) and (max-width: 768px) {
+  .bodyTitle {
+    padding: 28px 6px;
+    font-size: 30px;
+  }
+
+  .form {
+    font-size: 18px;
+  }
+}
+
+/* Desktop */
+@media only screen and (min-width: 769px) {
+  .bodyTitle {
+    padding: 30px 8px;
+    font-size: 32px;
+  }
+
+  .form {
+    font-size: 20px;
+  }
 }
