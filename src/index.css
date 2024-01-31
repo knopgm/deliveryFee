@@ -12,6 +12,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -21,7 +27,10 @@ a:hover {
   color: #747bff;
 }
 
-body {
+body,
+h1,
+h3,
+button {
   margin: 0;
 }
 
@@ -57,4 +66,9 @@ input {
   font-weight: 500;
   font-family: inherit;
   max-width: 200px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }
