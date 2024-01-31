@@ -1,30 +1,35 @@
-# React + TypeScript + Vite
+# Frontend Intern 2024 Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+# Wolt Challenge - Delivery Fee Calculator
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![Calculate-Fee](./src/assets/CalculateFee.png)
 
-## Expanding the ESLint configuration
+With thDelivery Fee Calculator, the user can fill up a small formular that will calculate how much will cost their delivery, considering the amount of the cart value, number of items to be deliver, distance and if it is a rush time of the week.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## How to use it
 
-- Configure the top-level `parserOptions` property like this:
+Install the projet locally in your computer by typing the following in yout terminal:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Then, run it with the comand:
+
+```
+npm run dev
+```
+
+## Technologies applied
+
+- React
+- Typescript
+- React @testing-library
+- Jest Javascript testing framework
+- React Datepicker library
+
+---
+
+> [My Portfolio](https://knopgm.com/)
