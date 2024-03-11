@@ -12,31 +12,15 @@
 }
 
 .topImgs {
-  display: flex;
-  align-items: center;
-  align-items: center;
-  padding-left: 15%;
   padding-bottom: 20px;
 }
 
-.logo-wrapper {
-  display: flex;
-  align-items: center;
-}
 .logo {
-  will-change: filter;
-  transition: filter 300ms;
+  margin: 0 auto;
 }
+
 .logo:hover {
-  filter: drop-shadow(0 0 2em #6ddcfbaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 3em #6ddcfbaa);
-}
-.imgYuho {
-  position: relative;
-  object-fit: scale-down;
-  z-index: -1;
+  cursor: pointer;
 }
 
 .card {
@@ -49,13 +33,7 @@
 
 /* Desktop */
 @media only screen and (min-width: 769px) {
-  .topImgs {
-    padding-left: unset;
-  }
-  .logo-wrapper {
-    justify-content: end;
-  }
   .logo {
-    max-width: 50%;
+    max-width: 70%;
   }
 }

@@ -156,3 +156,16 @@ export default function DeliveryFeeCalc() {
     </div>
   );
 }
+
+// - create custom hook to contain state mananagemnt logic.
+// - improve how form is dealt with.
+//    - perhaps use a 3rd party library to handle form interactions and input validation.
+//    - eg.: the `react-hook-form` library.
+// - improve the overall application accessibility.
+// - use css modules to isolate styles and miminimise class colision.
+// - create components to contain the logic of form inputs.
+// - explore using design tokens to standardise CSS variables and improve consistency.
+// - create reusable layout components and enable scaling the applicaton more easily in the future.
+// - consider using a translation library to offer the app in different languages.
+// - improve the way we deal with currency calculations
+//     - perhaps making currency type, amount and precision available to make it easier to handle money operations.
